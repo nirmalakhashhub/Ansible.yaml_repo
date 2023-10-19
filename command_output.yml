@@ -1,0 +1,13 @@
+---
+ - hosts: prd
+   become: true
+   name: Getting command output in ansible console
+   tasks:
+     - name: Executing df-h command in slave node
+       command: "df -h"
+       register: command_output
+
+     - debug:
+             var: command_output.stdout_lines
+
+...

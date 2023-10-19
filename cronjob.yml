@@ -1,0 +1,9 @@
+---
+ - hosts: 127.0.0.1
+   become: yes
+   name: cconfiguring cronjob to slave1
+   tasks:
+     - name: configuring cronjob on master
+       cron: name="rsync command" user=ubuntu minute="*/2" hour="*" day="*" month="*" weekday="*" job="rsync -avz /home/ubuntu/folder2/ ubuntu@54.165.43.250:/home/ubuntu/folder2 2>&1"
+
+...

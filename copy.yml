@@ -1,0 +1,12 @@
+---
+ - hosts: prd
+   become: yes
+   name: copying config file to all slave nodes
+   tasks:
+     - name: creating directory in all the slave node
+       file: dest="/home/ubuntu/log1" owner=ubuntu group=ubuntu mode="0755" state=directory
+
+     - name: Copying syslog in all the slave nodes
+       copy: src="/var/log/syslog" dest="/home/ubuntu/log1" backup=yes
+
+...  

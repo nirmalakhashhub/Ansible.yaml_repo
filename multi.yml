@@ -1,0 +1,36 @@
+#Playbook with multiple plays(working PB)
+---
+ - hosts: prd
+   become: yes
+   name: installing java & nginx and executing and getting command outputs in slave1
+   tasks:
+    - name: installing java in slave1
+      apt: name=default-jdk state=latest
+    
+    - name: Checking Java version
+      command: "java --version"
+      register: command_output
+
+    - debug:
+             var: command_output.stdout
+    
+    - name: executing hostname command
+      command: "hostname -i"
+      register: command_output1
+
+    - debug:
+             var: command_output1.stdout
+
+    - name: installing nginx in slave1
+      apt: name=nginx state=latest
+    - name: starting nginx services    
+      service: name=nginx state=started
+    
+    - name: Checking nginx version
+      command: "nginx -v"
+      register: command_output2
+
+    - debug:
+             var: command_output2.stdout
+...
+

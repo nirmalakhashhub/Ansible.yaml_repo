@@ -1,0 +1,36 @@
+---
+ - hosts: prd
+   become: yes
+   name: Deploying website in the docker container
+   tasks:
+     - name: updating packages
+       apt: upgrade=yes update_cache=yes
+
+     - name: installing docker
+       apt: name="docker.io" state=latest
+       
+     - name: starting the docker service
+       service: name=docker state=started
+
+     - name: creating a directory in slave nodes
+       file: dest="/home/ubuntu/dockerfile" owner=ubuntu group=ubuntu mode="0755" state=directory
+
+     - name: copying dockerfile to slave nodes
+       copy: src="/home/ubuntu/dockerfile/dockerfile" dest="/home/ubuntu/dockerfile/dockerfile"
+    
+     - name: copying index1.html to slave nodes
+       copy: src="/home/ubuntu/dockerfile/index1.html" dest="/home/ubuntu/dockerfile/index1.html"
+       
+     - name: Buildidng a dockerfile
+       shell: "sudo docker build /home/ubuntu/dockerfile/ -t website"
+
+     - name: Running docker container
+       shell: "sudo docker run -itd -p 82:80 --name webcont website"
+
+     - name: checking the container status
+       command: "sudo docker ps"
+       register: command_output
+
+     - debug:
+            var: command_output.stdout_line
+...

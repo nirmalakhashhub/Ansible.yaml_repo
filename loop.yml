@@ -1,0 +1,30 @@
+# Creating users with loops in Ansible
+---
+ - hosts: prd
+   become: yes
+   name: Creating users with loops
+   tasks:
+    - name: creating group
+      group: name="DigiOps" gid="5001" state="present"
+
+    - name: Create new users
+      user:
+        name: '{{ item.name }}'
+        uid:  '{{ item.uid }}'
+        comment:  '{{ item.comment }}'
+        group: '{{ item.group }}'
+        state: present
+
+
+      loop:
+       - name: Andrew
+         uid: 1005
+         comment: Administrator
+         group: "DigiOps"
+
+       - name: Vaishnavi
+         uid: 1004
+         comment: Devop
+         group: "DigiOps"
+...
+

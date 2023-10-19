@@ -1,0 +1,9 @@
+---
+ - hosts: prd
+   become: true
+   name: My first playbook
+   tasks:
+     - name: Executing hostname command in slave node
+       command: "hostname -i"
+
+...
